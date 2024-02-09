@@ -20,7 +20,7 @@ const app = express();
 
 const corsOptions = {
   origin: 'https://glittering-kashata-cb2f7b.netlify.app/', // Adjust this to your client's URL
-  methods: ['GET', 'POST'], // Allowed HTTP methods
+  methods: ['GET', 'POST', 'OPTIONS'], // Allowed HTTP methods
 };
 
 
