@@ -18,10 +18,10 @@ const server = new ApolloServer({
 const app = express();
 
 
-// app.use((req, res, next) => {
-//   res.setHeader('Referrer-Policy', 'no-referrer');
-//   next();
-// });
+app.use((req, res, next) => {
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  next();
+});
 
 const corsOptions = {
   origin: 'https://glittering-kashata-cb2f7b.netlify.app', // Adjust this to your client's URL
