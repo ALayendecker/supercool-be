@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 // Import the ApolloServer class
 const { ApolloServer } = require('@apollo/server');
+const cors = require('cors');
 const { expressMiddleware } = require('@apollo/server/express4');
 const { authMiddleware } = require('./utils/auth');
 
@@ -17,6 +18,15 @@ const server = new ApolloServer({
 
 const app = express();
 
+const corsOptions = {
+  origin: 'https://glittering-kashata-cb2f7b.netlify.app/', // Adjust this to your client's URL
+  credentials: true, // Allows cookies to be sent alongside requests
+  methods: ['GET', 'POST'], // Allowed HTTP methods
+};
+
+
+app.use(cors(corsOptions));
+
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
   await server.start();
@@ -25,16 +35,17 @@ const startApolloServer = async () => {
   app.use(express.json());
   
   app.use('/graphql', expressMiddleware(server, {
-    context: authMiddleware
+    context: authMiddleware,
+    cors: false 
   }));
 
-  if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../client/dist')));
+  // if (process.env.NODE_ENV === 'production') {
+  //   app.use(express.static(path.join(__dirname, '../client/dist')));
 
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-    });
-  }
+  //   app.get('*', (req, res) => {
+  //     res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  //   });
+  // }
 
   db.once('open', () => {
     app.listen(PORT, () => {
