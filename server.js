@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 // Import the ApolloServer class
 const { ApolloServer } = require('@apollo/server');
 const cors = require('cors');
@@ -19,12 +18,13 @@ const server = new ApolloServer({
 const app = express();
 
 
-app.use((req, res, next) => {
-  res.setHeader('Referrer-Policy', 'no-referrer');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Referrer-Policy', 'no-referrer');
+//   next();
+// });
+
 const corsOptions = {
-  // origin: 'https://glittering-kashata-cb2f7b.netlify.app', // Adjust this to your client's URL
+  origin: 'https://glittering-kashata-cb2f7b.netlify.app', // Adjust this to your client's URL
   credentials: false,
   methods: ['GET', 'POST', 'OPTIONS'], // Allowed HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -45,13 +45,6 @@ const startApolloServer = async () => {
     cors: false 
   }));
 
-  // if (process.env.NODE_ENV === 'production') {
-  //   app.use(express.static(path.join(__dirname, '../client/dist')));
-
-  //   app.get('*', (req, res) => {
-  //     res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-  //   });
-  // }
 
   db.once('open', () => {
     app.listen(PORT, () => {
